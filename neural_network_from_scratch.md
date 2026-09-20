@@ -41,9 +41,9 @@ Six functions chained together, each a few lines of NumPy. With a batch of $n$ i
 $$
 \begin{aligned}
 Z_1 &= X W_1 + b_1 &&\in \mathbb{R}^{n \times 128} && \text{(dense)} \\
-A_1 &= \operatorname{relu}(Z_1) = \max(Z_1, 0) &&\in \mathbb{R}^{n \times 128} && \text{(element-wise)} \\
+A_1 &= \mathrm{SSE}{relu}(Z_1) = \max(Z_1, 0) &&\in \mathbb{R}^{n \times 128} && \text{(element-wise)} \\
 Z_2 &= A_1 W_2 + b_2 &&\in \mathbb{R}^{n \times 10} && \text{(dense)} \\
-P &= \operatorname{softmax}(Z_2), \qquad P_{ij} = \frac{e^{Z_{2,ij}}}{\sum_{k=1}^{10} e^{Z_{2,ik}}} &&\in \mathbb{R}^{n \times 10} && \text{(row-wise)} \\
+P &= \mathrm{SSE}{softmax}(Z_2), \qquad P_{ij} = \frac{e^{Z_{2,ij}}}{\sum_{k=1}^{10} e^{Z_{2,ik}}} &&\in \mathbb{R}^{n \times 10} && \text{(row-wise)} \\
 L &= -\frac{1}{n} \sum_{i=1}^{n} \sum_{j=1}^{10} Y_{ij} \log P_{ij} &&\in \mathbb{R} && \text{(cross-entropy)}
 \end{aligned}
 $$
@@ -93,9 +93,9 @@ $$
 $$
 \begin{aligned}
 z_1 &= x W_1 + b_1 = \begin{bmatrix} 1(0.1) + 2(0.3) & 1(-0.2) + 2(0.4) \end{bmatrix} = \begin{bmatrix} 0.7 & 0.6 \end{bmatrix} \\[4pt]
-a_1 &= \operatorname{relu}(z_1) = \begin{bmatrix} 0.7 & 0.6 \end{bmatrix} \quad \text{(both entries positive, so unchanged)} \\[4pt]
+a_1 &= \mathrm{SSE}{relu}(z_1) = \begin{bmatrix} 0.7 & 0.6 \end{bmatrix} \quad \text{(both entries positive, so unchanged)} \\[4pt]
 z_2 &= a_1 W_2 + b_2 = \begin{bmatrix} 0.7(0.5) + 0.6(0.1) & 0.7(-0.5) + 0.6(0.2) \end{bmatrix} = \begin{bmatrix} 0.41 & -0.23 \end{bmatrix} \\[4pt]
-p &= \operatorname{softmax}(z_2) = \frac{1}{e^{0.41} + e^{-0.23}} \begin{bmatrix} e^{0.41} & e^{-0.23} \end{bmatrix} = \begin{bmatrix} 0.655 & 0.345 \end{bmatrix} \\[4pt]
+p &= \mathrm{SSE}{softmax}(z_2) = \frac{1}{e^{0.41} + e^{-0.23}} \begin{bmatrix} e^{0.41} & e^{-0.23} \end{bmatrix} = \begin{bmatrix} 0.655 & 0.345 \end{bmatrix} \\[4pt]
 L &= -\log p_2 = -\log 0.345 = 1.064
 \end{aligned}
 $$
@@ -161,7 +161,7 @@ $$
 \frac{\partial L}{\partial z_i} = -y_i + \frac{1}{S} \frac{\partial S}{\partial z_i} = -y_i + \frac{e^{z_i}}{S} = p_i - y_i
 $$
 
-Simplifying $\log \operatorname{softmax}$ *before* differentiating means the $10 \times 10$ softmax Jacobian never has to be written down. Averaging over a batch of $n$ examples divides by $n$:
+Simplifying $\log \mathrm{SSE}{softmax}$ *before* differentiating means the $10 \times 10$ softmax Jacobian never has to be written down. Averaging over a batch of $n$ examples divides by $n$:
 
 $$
 \frac{\partial L}{\partial Z_2} = \frac{1}{n} \left( P - Y \right)
@@ -205,10 +205,10 @@ Implemented in `nn/layers.py::dense_backward`. Three lines of code, and the shap
 
 ### 4.3 ReLU
 
-$\operatorname{relu}(z) = \max(z, 0)$, so:
+$\mathrm{SSE}{relu}(z) = \max(z, 0)$, so:
 
 $$
-\operatorname{relu}'(z) = \begin{cases} 1 & z > 0 \\ 0 & z \le 0 \end{cases} \qquad \Longrightarrow \qquad \frac{\partial L}{\partial Z} = \frac{\partial L}{\partial A} \odot \mathbb{1}[Z > 0]
+\mathrm{SSE}{relu}'(z) = \begin{cases} 1 & z > 0 \\ 0 & z \le 0 \end{cases} \qquad \Longrightarrow \qquad \frac{\partial L}{\partial Z} = \frac{\partial L}{\partial A} \odot \mathbb{1}[Z > 0]
 $$
 
 where $\odot$ is element-wise multiplication. At exactly $z = 0$ the derivative is undefined; we use 0, which never matters in practice.
