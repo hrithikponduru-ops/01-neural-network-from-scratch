@@ -1,6 +1,6 @@
 # 01-neural-network-from-scratch
 
-[▶ Open the Applied Mathematics Portfolio](https://hrithikponduru-ops.github.io/01-neural-network-from-scratch/Applied%20Mathematics%20Portfolio.html)
+[▶ Open the Applied Mathematics Portfolio](https://hrithikponduru-ops.github.io/01-neural-network-from-scratch/neural_network_from_scratch.html)
 
 ## Setup
 
