@@ -1,8 +1,15 @@
+# 01-neural-network-from-scratch
+
+[▶ Open the Applied Mathematics Portfolio](https://hrithikponduru-ops.github.io/01-neural-network-from-scratch/Applied%20Mathematics%20Portfolio.html)
 
 ## Setup
 
-1. Clone the repository
-2. Create virtual environment:
+1. Clone the repository:
+```bash
+   git clone https://github.com/hrithikponduru-ops/01-neural-network-from-scratch.git
+   cd 01-neural-network-from-scratch
+```
+2. Create a virtual environment:
 ```bash
    python -m venv venv
 ```
