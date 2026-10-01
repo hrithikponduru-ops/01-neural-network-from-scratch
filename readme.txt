@@ -1,6 +1,7 @@
-## Setup
+#Readme
+[▶ 01-neural-network-from-scratch](https://hrithikponduru-ops.github.io/01-neural-network-from-scratch/Applied%20Mathematics%20Portfolio.html)
 
-[▶ 01-neural-network-from-scratch](https://hrithikponduru-ops.github.io/REPO-NAME/Applied%20Mathematics%20Portfolio.html)
+## Setup
 
 1. Clone the repository
 2. Create virtual environment:
