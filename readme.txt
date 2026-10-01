@@ -1,4 +1,5 @@
 ## Setup
+https://hrithikponduru-ops.github.io/01-neural-network-from-scratch/neural_network_from_scratch.html
 
 1. Clone the repository
 2. Create virtual environment:
